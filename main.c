@@ -8,7 +8,8 @@ float prix[100];
 int compteur = 0;
 //fonction d'ajouter des livre
 void ajouter(){
-    int choix;
+    
+        int choix;
         printf("Entrer les informations suivantes : \n");
         printf("Titre de Livre : ");
         fgets(titre[compteur], 100, stdin);
@@ -20,10 +21,12 @@ void ajouter(){
         scanf("%d", &quantite[compteur]);
         printf("Prix de Livre : ");
         scanf("%f", &prix[compteur]);
-        //check si le livre est dejat existe 
-        //strcmpi() ignore the cases
-        compteur++;          
+        compteur++;
+       /* if (compteur=100) {
+          printf("Pas de place pour stocker ce livre.");
+       } */        
 }
+//Fonction d'afficher les detailles de livre.
 void afficher(){
     for (int i=0; i<compteur; i++){
         printf("\n\t********\n");
@@ -36,6 +39,7 @@ void afficher(){
     }
 
 }
+//Fonction pour modifier la quantite d'un Livre
 void modifier(){
     char livreModifier[100];
     int status, existe;
@@ -53,10 +57,27 @@ void modifier(){
         }    
     } 
     if(existe == 0){
-        printf("Pas de livre avec ce titre.");
-    } 
-
-    
+        printf("Pas de livre avec ce titre, Essayer de le ajouter.");
+    }     
+}
+//Fonction pour supprimer Un livre
+void supprimer(){
+    char search_livre[100];
+    int position;
+    printf("Entrer le titre de Livre a suprimer : ");
+    fgets(search_livre, 100, stdin);
+    search_livre[strcspn(search_livre, "\n")] = '\0';
+    //int status = strcmp(search_livre, titre[100])
+    for(int i=0; i<compteur; i++){
+        if (strcmp(search_livre, titre[i]) == 0){
+            position = i;
+            break;
+        }
+    }
+    for (int i = position; i<compteur-1; i++){
+        strcpy(titre[i], titre[i+1]);
+    }
+    compteur--;
 }
 void lister(){
     int somme = 0;
@@ -78,7 +99,7 @@ int main(){
         printf("3.  Mettre a jour la quantite d'un livre.\n");
         printf("4.  Supprimer un livre du stock.\n");
         printf("5.  Afficher le nombre total de livres en stock.\n");
-        printf("6.  Entrer 7 pour quiter le programme.\n");
+        printf("6.  Entrer 6 pour quiter le programme.\n");
         printf("\n---------------------------------------------------------------------\n");
         printf("Entrer votre choix : ");
         scanf("%d", &option);
@@ -95,9 +116,16 @@ int main(){
             case 3:
                 modifier();
                 break;
+            case 4:
+                supprimer();
+                break;
             case 5:
                 lister();
                 break;
+            case 6:
+                break;
+            default :
+                printf("L'operation souhaiter n'existe pas.");
         }
 
 
