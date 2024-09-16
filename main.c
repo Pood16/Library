@@ -5,6 +5,7 @@ char titre[100][100];
 char auteur[100][100];
 int quantite[100];
 float prix[100];
+char livreRechercher[100];
 int compteur = 0;
 //fonction d'ajouter des livre
 void ajouter(){
@@ -39,20 +40,44 @@ void afficher(){
     }
 
 }
-//Fonction pour modifier la quantite d'un Livre
-void modifier(){
-    char livreModifier[100];
+void details(){
     int status, existe;
     printf("Entrer le titre de livre a modifier : \n");
-    fgets(livreModifier, 100, stdin);
-    livreModifier[strcspn(livreModifier, "\n")] = '\0';
+    fgets(livreRechercher, 100, stdin);
+    livreRechercher[strcspn(livreRechercher, "\n")] = '\0';
     for (int i=0; i<compteur; i++){
         existe = 0;
-        status = strcmp(titre[i], livreModifier);
+        status = strcmp(titre[i], livreRechercher);
+        if (!status){
+            existe = 1;
+            printf("Information de Livre rechercher :\n");
+            printf("Titre de livre : %s\n", titre[i]);
+            printf("auteur : %s\n", auteur[i]);
+            printf("Quantite disponible : %d\n", quantite[i]);
+            printf("Prix : %.2f\n", prix[i]);  
+            break;
+        }    
+    } 
+    if (existe == 0){
+        printf("Livre n'existe pas dans le stcks.\n");
+    }
+    
+}
+//Fonction pour modifier la quantite d'un Livre
+void modifier(){
+    
+    int status, existe;
+    printf("Entrer le titre de livre a modifier : \n");
+    fgets(livreRechercher, 100, stdin);
+    livreRechercher[strcspn(livreRechercher, "\n")] = '\0';
+    for (int i=0; i<compteur; i++){
+        existe = 0;
+        status = strcmp(titre[i], livreRechercher);
         if (!status){
             existe = 1;
             printf("Entrer la nouvelle quantite : ");
             scanf("%d", &quantite[i]);  
+            printf("La Quantite est Bien modifier.");
             break;
         }    
     } 
@@ -77,6 +102,7 @@ void supprimer(){
     for (int i = position; i<compteur-1; i++){
         strcpy(titre[i], titre[i+1]);
     }
+    printf("Le livre est bien supprimer.");
     compteur--;
 }
 void lister(){
@@ -95,11 +121,11 @@ int main(){
         printf("\t\t\tMenu d'opperation possible :\n");
         printf("1.  Ajouter un livre au stock.\n");
         printf("2.  Afficher tous les livres disponibles.\n");
-        //printf("3.  Rechercher un livre par son titre.\n");
-        printf("3.  Mettre a jour la quantite d'un livre.\n");
-        printf("4.  Supprimer un livre du stock.\n");
-        printf("5.  Afficher le nombre total de livres en stock.\n");
-        printf("6.  Entrer 6 pour quiter le programme.\n");
+        printf("3.  Rechercher un livre par son titre.\n");
+        printf("4.  Mettre a jour la quantite d'un livre.\n");
+        printf("5.  Supprimer un livre du stock.\n");
+        printf("6.  Afficher le nombre total de livres en stock.\n");
+        printf("7.  Entrer 7 pour quiter le programme.\n");
         printf("\n---------------------------------------------------------------------\n");
         printf("Entrer votre choix : ");
         scanf("%d", &option);
@@ -114,20 +140,25 @@ int main(){
                 afficher();
                 break;
             case 3:
-                modifier();
+                details();
                 break;
             case 4:
-                supprimer();
+                modifier();
                 break;
             case 5:
-                lister();
+                supprimer();
                 break;
             case 6:
+                lister();
+                break;
+            case 7:
                 break;
             default :
                 printf("L'operation souhaiter n'existe pas.");
         }
 
 
-    }while(option != 6);
+    }while(option != 7);
+    system("pause");
+    return 0;
 }
